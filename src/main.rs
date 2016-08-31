@@ -15,6 +15,7 @@ use argparse::{ArgumentParser, Store, List};
 mod config;
 
 mod build;
+mod clean;
 mod new;
 mod run;
 
@@ -69,7 +70,7 @@ fn main() {
 
     match command {
         Command::Build => build::command(args),
-        Command::Clean => println!("clean"),
+        Command::Clean => clean::command(args),
         Command::New => new::command(args),
         Command::Run => run::command(args),
         Command::Test => println!("test"),
