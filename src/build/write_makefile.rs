@@ -46,6 +46,8 @@ pub fn write(config: Config) {
                          .join(" ").as_str())
                 .replace("__SRC_DIR__",
                          config.path.src_dir.as_str())
+                .replace("__DEST_DIR__",
+                         config.path.dest_dir.as_str())
                 .as_bytes())
 
     }).expect("can not create Makefile");

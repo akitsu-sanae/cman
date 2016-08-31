@@ -9,6 +9,7 @@ lib_dirs = ["$HOME/local/lib"]
 libs = ["m"]
 includes = ["./include", "$HOME/local/include"]
 source = "./src"
+dest = "./build"
 
 [build]
 compiler = "g++"

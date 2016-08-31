@@ -81,6 +81,7 @@ pub struct Path {
     pub libs: Vec<String>,
     pub includes: Vec<String>,
     pub src_dir: String,
+    pub dest_dir: String,
 }
 impl Path {
     pub fn new(toml: &Value) -> Path {
@@ -107,12 +108,16 @@ impl Path {
         let src_dir = toml.get("source")
             .expect("invalid path config: missing source")
             .as_str().expect("invalid path config: source must be String").to_string();
+        let dest_dir = toml.get("dest")
+            .expect("invalid path config: missing dest")
+            .as_str().expect("invalid path config: dest must be String").to_string();
 
         Path {
             lib_dirs: lib_dirs,
             libs: libs,
             includes: includes,
             src_dir: src_dir,
+            dest_dir: dest_dir,
         }
     }
 }

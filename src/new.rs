@@ -24,7 +24,7 @@ pub fn command(args: Vec<String>) {
         .expect("missing default cman.toml");
 
     mkdir(pack_name);
-    mkdir(&format!("{}/build/obj", pack_name));
+    mkdir(&format!("{}/{}/obj", pack_name, config.path.dest_dir));
     for inc in config.path.includes {
         if inc.as_bytes()[0] != '.' as u8 { continue } // maybe, this is not relative path
         mkdir(&format!("{}/{}", pack_name, inc));

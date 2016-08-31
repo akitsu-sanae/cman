@@ -9,7 +9,7 @@ INCLUDE = __INCLUDES__
 SRCDIR = __SRC_DIR__
 SRC = $(wildcard $(SRCDIR)/*.cpp)
 
-BUILD_DIR = ./build
+BUILD_DIR = __DEST_DIR__
 TARGET = $(BUILD_DIR)/$(TARGET_NAME)
 
 OBJ = $(addprefix $(BUILD_DIR)/obj/, $(notdir $(SRC:.cpp=.o)))
