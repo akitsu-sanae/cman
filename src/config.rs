@@ -11,9 +11,9 @@ use std::io::Read;
 use std::option::Option;
 use toml::{Parser, Value};
 
-fn read_toml() -> Option<Value> {
+fn read_toml(filename: &str) -> Option<Value> {
     let mut input = String::new();
-    match File::open("./cman.toml").and_then(|mut f| {
+    match File::open(filename).and_then(|mut f| {
         f.read_to_string(&mut input)
     }) {
         Ok(_) => (),
@@ -42,9 +42,9 @@ pub struct Config {
     pub build: Build,
 }
 impl Config {
-    pub fn load() -> Option<Config> {
+    pub fn load(filename: &str) -> Option<Config> {
 
-        let toml = match read_toml() {
+        let toml = match read_toml(filename) {
             Some(toml) => toml,
             None => return None,
         };

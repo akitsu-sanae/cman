@@ -8,14 +8,13 @@
 
 use std::fs;
 use std::env;
-use config::Config;
 
 fn mkdir(path: &String) {
     fs::create_dir_all(path.as_str())
         .expect(format!("can not create directory: {}", path).as_str());
 }
 
-pub fn command(args: Vec<String>, _: Option<Config>) {
+pub fn command(args: Vec<String>) {
     let ref path = args[1];
     mkdir(path);
     mkdir(&format!("{}/build/obj", path));

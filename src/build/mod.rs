@@ -12,10 +12,11 @@ use config::Config;
 mod is_release;
 mod write_makefile;
 
-pub fn command(_args: Vec<String>, config: Option<Config>) {
+pub fn command(_args: Vec<String>) {
     // let release = is_release::parse(args);
 
-    let config = config.expect("missing ./cman.config");
+    let config = Config::load("./cman.toml")
+        .expect("missing ./cman.toml");
     write_makefile::write(config);
     let output = Command::new("make")
         .output()

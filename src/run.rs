@@ -6,9 +6,8 @@
 ============================================================================*/
 
 use std::process::Command;
-use config::Config;
 
-pub fn command(_: Vec<String>, _: Option<Config>) {
+pub fn command(_: Vec<String>) {
     let output = Command::new("make")
         .arg("run")
         .output()

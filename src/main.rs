@@ -67,13 +67,11 @@ fn main() {
 
     args.insert(0, format!("command {:?}", command));
 
-    let config = config::Config::load();
-
     match command {
-        Command::Build => build::command(args, config),
+        Command::Build => build::command(args),
         Command::Clean => println!("clean"),
-        Command::New => new::command(args, config),
-        Command::Run => run::command(args, config),
+        Command::New => new::command(args),
+        Command::Run => run::command(args),
         Command::Test => println!("test"),
         Command::Update => println!("update"),
         Command::Upgrade => println!("upgrade"),
