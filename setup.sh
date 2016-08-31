@@ -27,4 +27,7 @@ fi
 mkdir $CMAN_CONFIG_PATH
 cp ./config/* $CMAN_CONFIG_PATH
 
+cargo build --release
+install -s ./target/release/cman /usr/local/bin
+
 
