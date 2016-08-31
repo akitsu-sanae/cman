@@ -7,16 +7,16 @@
 
 
 use std::process::Command;
-use toml::Value;
+use config::Config;
 
 mod is_release;
-mod read_toml;
 mod write_makefile;
 
-pub fn command(_args: Vec<String>) {
+pub fn command(_args: Vec<String>, config: Option<Config>) {
     // let release = is_release::parse(args);
-    let toml = read_toml::read();
-    write_makefile::write(Value::Table(toml));
+
+    let config = config.expect("missing ./cman.config");
+    write_makefile::write(config);
     let output = Command::new("make")
         .output()
         .expect("faild to make");
