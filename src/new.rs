@@ -24,7 +24,7 @@ pub fn command(args: Vec<String>) {
     let cman_dir = env::var("CMAN_CONFIG_PATH")
         .expect("CMAN_CONFIG_PATH is not set");
 
-    fs::copy(format!("{}/main.cpp", cman_dir), format!("{}/main.cpp", path))
+    fs::copy(format!("{}/main.cpp", cman_dir), format!("{}/src/main.cpp", path))
         .expect("can not copy main.cpp");
     fs::copy(format!("{}/cman.toml", cman_dir), format!("{}/cman.toml", path))
         .expect("can not copy cman.toml");

@@ -12,6 +12,19 @@ if [ ! -f ./config/Makefile.template ]; then
     exit 1
 fi
 
+if [ ! -f ./config/main.cpp ]; then
+    echo "missing ./config/main.cpp"
+    echo "please run 'git clone ...' again"
+    exit 1
+fi
+
+if [ ! -f ./config/cman.toml ]; then
+    echo "missing ./config/cman.toml"
+    echo "please run 'git clone ...' again"
+    exit 1
+fi
+
+mkdir $CMAN_CONFIG_PATH
 cp ./config/* $CMAN_CONFIG_PATH
 
 
