@@ -13,6 +13,7 @@ extern crate toml;
 use argparse::{ArgumentParser, Store, List};
 
 mod build;
+mod new;
 
 #[derive(Debug)]
 enum Command {
@@ -65,7 +66,7 @@ fn main() {
     match command {
         Command::Build => build::command(args),
         Command::Clean => println!("clean"),
-        Command::New => println!("new"),
+        Command::New => new::command(args),
         Command::Run => println!("run"),
         Command::Test => println!("test"),
         Command::Update => println!("update"),
