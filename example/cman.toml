@@ -1,0 +1,17 @@
+[package]
+name = "test"
+version = "0.0.1"
+authors = ["akitsu-sanae"]
+
+[path]
+lib_dirs = ["/mingw64/lib"]
+libs = ["ffi", "m"]
+includes = ["./include"]
+source = "./src"
+
+[build]
+compiler = "/usr/bin/g++"
+args = [
+    "-Wall", "-Wextra", "-std=c++14"
+]
+

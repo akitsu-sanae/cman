@@ -1,0 +1,9 @@
+[package]
+name = "cman"
+version = "0.1.0"
+authors = ["akitsu-sanae <akitsu.sanae@gmail.com>"]
+
+[dependencies]
+toml = "0.2"
+argparse = "0.2.1"
+
