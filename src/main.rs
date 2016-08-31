@@ -14,6 +14,7 @@ use argparse::{ArgumentParser, Store, List};
 
 mod build;
 mod new;
+mod run;
 
 #[derive(Debug)]
 enum Command {
@@ -67,7 +68,7 @@ fn main() {
         Command::Build => build::command(args),
         Command::Clean => println!("clean"),
         Command::New => new::command(args),
-        Command::Run => println!("run"),
+        Command::Run => run::command(args),
         Command::Test => println!("test"),
         Command::Update => println!("update"),
         Command::Upgrade => println!("upgrade"),
