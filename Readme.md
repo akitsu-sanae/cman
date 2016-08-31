@@ -2,6 +2,22 @@
 
 C++ is a build system and package manager for C++.
 
+# How to install
+
+1. run `cargo build --release`
+2. add your shell config file `export CMAN_CONFIG_PATH="$HOME/.config/cman"`
+3. run 'sudo sh ./setup.sh'
+
+
+# How to use
+
+* cman new ... make cman project directory and create some initial files.
+* cman build ... create Makefile from cman.toml and then run `make`
+* cman run ... run `make run`
+* cman clean ... run `make clean`
+
+and so on...  
+
 # Copyright
 Copyright (C) 2016 akitsu sanae.  
 Distributed under the Boost Software License, Version 1.0. 
