@@ -9,13 +9,15 @@
 use std::fs::File;
 use std::io::Write;
 use std::io::Read;
+use std::env;
 use toml::Value;
 
 pub fn write(toml: Value) {
     let mut makefile = String::new();
     let config = Config::new(&toml);
 
-    File::open("${CMAN_CONFIG_PATH}/Makefile.template").and_then(|mut f| {
+    let filename = format!("{}/Makefile.template", env::var("CMAN_CONFIG_PATH").expect("CMAN_CONFIG_PATH is not set"));
+    File::open(filename).and_then(|mut f| {
         f.read_to_string(&mut makefile)
     }).expect("can not open Makefile.template");
 

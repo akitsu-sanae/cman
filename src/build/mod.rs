@@ -17,7 +17,7 @@ pub fn command(_args: Vec<String>) {
     // let release = is_release::parse(args);
     let toml = read_toml::read();
     write_makefile::write(Value::Table(toml));
-    Command::new("make run")
+    Command::new("make")
         .output()
         .expect("faild to make");
 }
