@@ -1,0 +1,18 @@
+
+[package]
+name = "test"
+version = "0.0.1"
+author = ["akitsu-sanae"]
+
+[path]
+lib_dirs = ["$HOME/local/lib"]
+libs = ["m"]
+includes = ["./include", "$HOME/local/include"]
+source = "./src"
+
+[build]
+compiler = "g++"
+args = [
+    "-Wall", "-Wextra", "-std=c++11", "-O2"
+]
+
