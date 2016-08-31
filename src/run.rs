@@ -8,7 +8,6 @@
 use std::process::Command;
 
 pub fn command(_: Vec<String>) {
-    super::build::command(vec![]);
     let output = Command::new("make")
         .arg("run")
         .output()
