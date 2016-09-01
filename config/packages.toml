@@ -16,6 +16,28 @@ build_commands = [
     ["rm", "-rf", "boost"]
 ]
 
+[packages.eigen]
+description = "C++ template library for liner algebra"
+url = "http://bitbucket.org/eigen/eigen/get"
+version = "3.2.9"
+build_commands = [
+    ["wget", "__URL__/__VERSION__.tar.gz"],
+    ["mkdir", "Eigen"],
+    ["tar", "xf", "__VERSION__.tar.gz", "-C", "Eigen", "--strip-components", "2"],
+    ["sudo", "mv", "Eigen", "__INSTALL_DIR__/include/"],
+    ["rm", "__VERSION__.tar.gz"]
+]
+
+[packages.sprout]
+description = "C++11/14 constexpr based libraries"
+url = "https://github.com/bolero-MURAKAMI/Sprout"
+version = "1.0"
+build_commands = [
+    ["git", "clone", "__URL__"],
+    ["sudo", "mv", "Sprout/sprout", "__INSTALL_DIR__/include/"],
+    ["rm", "-rf", "Sprout"]
+]
+
 [packages.osjul]
 description = "header only utility library"
 url = "https://github.com/akitsu-sanae/osjul"
