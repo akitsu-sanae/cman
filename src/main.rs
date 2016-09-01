@@ -12,6 +12,7 @@ extern crate toml;
 
 use argparse::{ArgumentParser, Store, List};
 
+mod error_message;
 mod config;
 mod write_makefile;
 

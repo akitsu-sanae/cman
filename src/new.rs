@@ -9,6 +9,7 @@
 use std::fs;
 use std::env;
 use config::Config;
+use error_message::ErrMsg;
 
 fn mkdir(path: &String) {
     fs::create_dir_all(path.as_str())
@@ -16,12 +17,13 @@ fn mkdir(path: &String) {
 }
 
 pub fn command(args: Vec<String>) {
+    let em = ErrMsg::new("default cman.toml");
     let ref pack_name = args[1];
     let cman_dir = env::var("CMAN_CONFIG_PATH")
         .expect("CMAN_CONFIG_PATH is not set");
 
     let config = Config::load(format!("{}/cman.toml", cman_dir).as_str())
-        .expect("missing default cman.toml");
+        .expect(em.invalid_file().as_str());
 
     mkdir(pack_name);
     mkdir(&format!("{}/{}/obj", pack_name, config.path.dest_dir));

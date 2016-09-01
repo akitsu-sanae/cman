@@ -11,49 +11,52 @@ use std::env;
 use std::fs::File;
 use std::io::Read;
 use toml::{Parser, Value};
+use error_message::ErrMsg;
 
 
 pub fn command(args: Vec<String>) {
+    let em = ErrMsg::new("packages.toml");
+
     let packages = read_packages();
     let packages = packages
-        .as_table().expect("invalid package file");
+        .as_table().expect(em.invalid_file().as_str());
 
     let date = packages
-        .get("date").expect("invalid packages file: missing date")
-        .as_str().expect("date must be String");
+        .get("date").expect(em.missing("date").as_str())
+        .as_str().expect(em.must_be("date").as_str());
     let install_dir = packages
-        .get("install_dir").expect("invalid packages file: missing install_dir")
-        .as_str().expect("install_dir must be String");
+        .get("install_dir").expect(em.missing("install_dir").as_str())
+        .as_str().expect(em.must_be("install_dir").as_str());
 
     let packages = packages
-        .get("packages").expect("missing packages")
-        .as_table().expect("package data must be Table");
+        .get("packages").expect(em.missing("packages").as_str())
+        .as_table().expect(em.must_be("packages").as_str());
 
     let name = args[1].as_str();
 
     let package = packages
         .get(name).expect(format!("{} not found", name).as_str())
-        .as_table().expect("package data must be Table");
+        .as_table().expect(em.must_be("package data").as_str());
 
     let url = package
-        .get("url").expect("invalid package file: missing url")
-        .as_str().expect("invalid package file: url must be String");
+        .get("url").expect(em.missing("url").as_str())
+        .as_str().expect(em.missing("url").as_str());
 
     let version = package
-        .get("version").expect("invalid package file: missing version")
-        .as_str().expect("invalid package file: version must be String");
+        .get("version").expect(em.missing("version").as_str())
+        .as_str().expect(em.must_be("version").as_str());
 
         println!("\u{001B}[32mInstall {} ver{} to {}\u{001B}[39m", name, version, install_dir);
 
     let commands = package
-        .get("build_commands").expect("invalid package file: missing build_commands")
-        .as_slice().expect("invalid package file: build_commands must be Array");
+        .get("build_commands").expect(em.missing("build commands").as_str())
+        .as_slice().expect(em.must_be("build commands").as_str());
 
     for command in commands {
         let mut command = command
-            .as_slice().expect("invalid package file: command must be Array")
+            .as_slice().expect(em.must_be("command").as_str())
             .into_iter().map(|e| {
-                e.as_str().expect("invalid packages file: element of command must be String").to_string()
+                e.as_str().expect(em.must_be("element of command").as_str()).to_string()
             }).collect::<Vec<String>>();
 
         let args = command.split_off(1)

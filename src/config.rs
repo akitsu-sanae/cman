@@ -10,6 +10,7 @@ use std::fs::File;
 use std::io::Read;
 use std::option::Option;
 use toml::{Parser, Value};
+use error_message::ErrMsg;
 
 fn read_toml(filename: &str) -> Option<Value> {
     let mut input = String::new();
@@ -48,20 +49,20 @@ impl Config {
     }
 
     pub fn load(filename: &str) -> Option<Config> {
-
+        let em = ErrMsg::new(filename);
         let toml = match read_toml(filename) {
             Some(toml) => toml,
             None => return None,
         };
-        let toml = toml.as_table().expect("invalid config");
+        let toml = toml.as_table().expect(em.invalid_file().as_str());
 
-        let package = toml.get("package").expect("invalid config: missing package");
-        let path = toml.get("path").expect("invalid config: missing path");
-        let build = toml.get("build").expect("invalid config: missing build");
+        let package = toml.get("package").expect(em.missing("package").as_str());
+        let path = toml.get("path").expect(em.missing("path").as_str());
+        let build = toml.get("build").expect(em.missing("build").as_str());
         Some(Config {
-            package: Package::new(package),
-            path: Path::new(path),
-            build: Build::new(build)
+            package: Package::new(package, &em),
+            path: Path::new(path, &em),
+            build: Build::new(build, &em)
         })
     }
 }
@@ -70,11 +71,11 @@ pub struct Package {
     pub name: String,
 }
 impl Package {
-    pub fn new(toml: &Value) -> Package {
-        let toml = toml.as_table().expect("invalid package config");
+    pub fn new(toml: &Value, em: &ErrMsg) -> Package {
+        let toml = toml.as_table().expect(em.invalid("package").as_str());
         let name = toml.get("name")
-            .expect("invalid package config: missing name")
-            .as_str().expect("invalid package config: name must be String").to_string();
+            .expect(em.missing("name").as_str())
+            .as_str().expect(em.must_be("name").as_str()).to_string();
         Package {
             name: name
         }
@@ -89,33 +90,33 @@ pub struct Path {
     pub dest_dir: String,
 }
 impl Path {
-    pub fn new(toml: &Value) -> Path {
-        let toml = toml.as_table().expect("invalid path config");
+    pub fn new(toml: &Value, em: &ErrMsg) -> Path {
+        let toml = toml.as_table().expect(em.invalid("path").as_str());
 
         let lib_dirs = toml.get("lib_dirs")
-            .expect("invalid path config: missing lib_dirs")
-            .as_slice().expect("invalid path config: lib_dirs must be Array")
+            .expect(em.missing("lib_dirs").as_str())
+            .as_slice().expect(em.must_be("lib_dirs").as_str())
             .into_iter().map(|value| {
-                value.as_str().expect("invalid path config: element in lib_dirs must be String").to_string()
+                value.as_str().expect(em.must_be("element of lib_dirs").as_str()).to_string()
             }).collect();
         let libs = toml.get("libs")
-            .expect("invalid path config: missing libs")
-            .as_slice().expect("invalid path config: libs must be Array")
+            .expect(em.missing("libs").as_str())
+            .as_slice().expect(em.must_be("libs").as_str())
             .into_iter().map(|value| {
-                value.as_str().expect("invalid path config: element in libs must be String").to_string()
+                value.as_str().expect(em.must_be("element of libs").as_str()).to_string()
             }).collect();
         let includes = toml.get("includes")
-            .expect("invalid path cofig: missing includes")
-            .as_slice().expect("invalid path config: includes must be Array")
+            .expect(em.missing("includes").as_str())
+            .as_slice().expect(em.must_be("includes").as_str())
             .into_iter().map(|value| {
-                value.as_str().expect("invalid path config: element in includes must be String").to_string()
+                value.as_str().expect(em.must_be("element of includes").as_str()).to_string()
             }).collect();
         let src_dir = toml.get("source")
-            .expect("invalid path config: missing source")
-            .as_str().expect("invalid path config: source must be String").to_string();
+            .expect(em.missing("source").as_str())
+            .as_str().expect(em.must_be("source").as_str()).to_string();
         let dest_dir = toml.get("dest")
-            .expect("invalid path config: missing dest")
-            .as_str().expect("invalid path config: dest must be String").to_string();
+            .expect(em.missing("dest").as_str())
+            .as_str().expect(em.must_be("dest").as_str()).to_string();
 
         Path {
             lib_dirs: lib_dirs,
@@ -133,16 +134,16 @@ pub struct Build {
 }
 
 impl Build {
-    pub fn new(toml: &Value) -> Build {
-        let toml = toml.as_table().expect("invalid build config");
+    pub fn new(toml: &Value, em: &ErrMsg) -> Build {
+        let toml = toml.as_table().expect(em.invalid("build").as_str());
         let compiler = toml.get("compiler")
-            .expect("invalid build config: missing compiler")
-            .as_str().expect("invalid build config: compiler must be String").to_string();
+            .expect(em.missing("compiler").as_str())
+            .as_str().expect(em.must_be("compiler").as_str()).to_string();
         let args = toml.get("args")
-            .expect("invalid build config: missing args")
-            .as_slice().expect("invalid bulid config: args must be Array")
+            .expect(em.missing("args").as_str())
+            .as_slice().expect(em.must_be("args").as_str())
             .into_iter().map(|value| {
-                value.as_str().expect("invalid build config: element in agrs must be String").to_string()
+                value.as_str().expect(em.must_be("element of args").as_str()).to_string()
             }).collect();
         Build {
             compiler: compiler,
