@@ -68,9 +68,12 @@ pub fn command(args: Vec<String>) {
             }).collect::<Vec<String>>();
         let exe = command[0].clone();
 
+        let line = format!("{} {}", exe, args.join(" "));
+        println!("\u{001B}[34mRun `{}`\u{001B}[39m", line);
+
         let output = Command::new(exe)
             .args(args.as_slice())
-            .output().expect(format!("\u{001B}[31mfailed at: {}\u{001B}[39m", command.join(" ")).as_str());
+            .output().expect(format!("\u{001B}[31mfailed at: {}\u{001B}[39m", line).as_str());
 
         println!("stdout:\n{}", String::from_utf8_lossy(&output.stdout));
         println!("stderr:\n{}", String::from_utf8_lossy(&output.stderr));
