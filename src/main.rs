@@ -22,6 +22,7 @@ mod clean;
 mod new;
 mod run;
 
+mod update;
 mod search;
 mod install;
 
@@ -80,7 +81,7 @@ fn main() {
         Command::New => new::command(args),
         Command::Run => run::command(args),
         Command::Test => println!("test"),
-        Command::Update => println!("update"),
+        Command::Update => update::command(args),
         Command::Upgrade => println!("upgrade"),
         Command::Search => search::command(args),
         Command::Install => install::command(args),
