@@ -7,15 +7,14 @@
 
 
 use std::process::Command;
+use std::io::{stdout, stderr};
+use std::process::exit;
+use write_makefile;
+use argparse::{ArgumentParser, StoreFalse};
 use config::Config;
 
-mod is_release;
-mod write_makefile;
-
 pub fn command(_args: Vec<String>) {
-    // let release = is_release::parse(args);
-
-    let config = Config::load("./cman.toml")
+    let config = Config::current()
         .expect("missing ./cman.toml");
     write_makefile::write(config);
     let output = Command::new("make")
@@ -30,5 +29,22 @@ pub fn command(_args: Vec<String>) {
     } else {
         "\u{001B}[31mfaild..."
     });
+}
+
+#[allow(dead_code)]
+fn is_release(args: Vec<String>) -> bool {
+    let mut is_release = false;
+    {
+        let mut ap = ArgumentParser::new();
+        ap.set_description("compile the current cman project");
+        ap.refer(&mut is_release)
+            .add_option(&["--release"], StoreFalse,
+                        r#"Release Build"#);
+        match ap.parse(args, &mut stdout(), &mut stderr()) {
+            Ok(()) => (),
+            Err(x) => exit(x),
+        }
+    }
+    is_release
 }
 

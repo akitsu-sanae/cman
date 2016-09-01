@@ -42,6 +42,11 @@ pub struct Config {
     pub build: Build,
 }
 impl Config {
+
+    pub fn current() -> Option<Config> {
+        Config::load("./cman.toml")
+    }
+
     pub fn load(filename: &str) -> Option<Config> {
 
         let toml = match read_toml(filename) {
