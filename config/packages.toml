@@ -4,14 +4,26 @@ install_dir="/usr/local"
 
 [packages.boost]
 description = "Boost C++ Libraries"
-url = "git@github.com:boostorg/boost.git"
+url = "https://github.com/boostorg/boost.git"
 version = "1.61.0"
 build_commands = [
-    ["git", "clone", "--recursice", "__URL__"],
+    ["git", "clone", "--recursive", "__URL__"],
+    ["cd", "boost"],
     ["git", "checkout", "refs/tags/boost-__VERSION__"],
     ["./bootstrap.sh"],
-    ["./b2", "intsall", "-j8", "--prefix=__INSTALL_DIR_"],
+    ["./b2", "intsall", "-j8", "--prefix=__INSTALL_DIR__"],
+    ["cd", ".."],
+    ["rm", "-rf", "boost"]
 ]
-includes = ["."]
+
+[packages.osjul]
+description = "header only utility library"
+url = "https://github.com/akitsu-sanae/osjul"
+version = "1.0"
+build_commands = [
+    ["git", "clone", "__URL__"],
+    ["mv", "./osjul/osjul", "__INSTALL_DIR__/include/"],
+    ["rm", "-rm", "./osjul"]
+]
 
 

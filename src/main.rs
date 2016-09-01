@@ -21,6 +21,7 @@ mod new;
 mod run;
 
 mod search;
+mod install;
 
 #[derive(Debug)]
 enum Command {
@@ -80,6 +81,6 @@ fn main() {
         Command::Update => println!("update"),
         Command::Upgrade => println!("upgrade"),
         Command::Search => search::command(args),
-        Command::Install => println!("install"),
+        Command::Install => install::command(args),
     }
 }
