@@ -15,6 +15,7 @@ use argparse::{ArgumentParser, Store, List};
 mod error_message;
 mod config;
 mod write_makefile;
+mod read_packages;
 
 mod build;
 mod clean;
