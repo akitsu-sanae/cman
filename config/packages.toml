@@ -1,0 +1,17 @@
+
+date = "2016-09-01"
+install_dir="/usr/local"
+
+[packages.boost]
+description = "Boost C++ Libraries"
+url = "git@github.com:boostorg/boost.git"
+version = "1.61.0"
+build_commands = [
+    ["git", "clone", "--recursice", "__URL__"],
+    ["git", "checkout", "refs/tags/boost-__VERSION__"],
+    ["./bootstrap.sh"],
+    ["./b2", "intsall", "-j8", "--prefix=__INSTALL_DIR_"],
+]
+includes = ["."]
+
+

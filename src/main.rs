@@ -20,6 +20,8 @@ mod clean;
 mod new;
 mod run;
 
+mod search;
+
 #[derive(Debug)]
 enum Command {
     Build,
@@ -77,7 +79,7 @@ fn main() {
         Command::Test => println!("test"),
         Command::Update => println!("update"),
         Command::Upgrade => println!("upgrade"),
-        Command::Search => println!("search"),
+        Command::Search => search::command(args),
         Command::Install => println!("install"),
     }
 }
