@@ -7,6 +7,7 @@
 
 use std::process::exit;
 use std::process::Command;
+use std::env;
 use error_message::ErrMsg;
 use read_packages::read_packages;
 
@@ -18,12 +19,17 @@ pub fn command(args: Vec<String>) {
     let packages = packages
         .as_table().expect(em.invalid_file().as_str());
 
+    let cman_config_path = env::var("CMAN_CONFIG_PATH")
+        .expect("CMAN_CONFIG_PATH is not set");
+
     let date = packages
         .get("date").expect(em.missing("date").as_str())
         .as_str().expect(em.must_be("date").as_str());
     let install_dir = packages
         .get("install_dir").expect(em.missing("install_dir").as_str())
-        .as_str().expect(em.must_be("install_dir").as_str());
+        .as_str().expect(em.must_be("install_dir").as_str())
+        .to_string().replace("__CMAN_CONFIG_PATH__", cman_config_path.as_str());
+
 
     let packages = packages
         .get("packages").expect(em.missing("packages").as_str())
@@ -57,11 +63,11 @@ pub fn command(args: Vec<String>) {
             }).collect::<Vec<String>>();
 
         let args = command.split_off(1)
-            .into_iter().map(move |arg| {
+            .into_iter().map(|arg| {
                 arg
                     .replace("__URL__", url)
                     .replace("__VERSION__", version)
-                    .replace("__INSTALL_DIR__", install_dir)
+                    .replace("__INSTALL_DIR__", install_dir.as_str())
             }).collect::<Vec<String>>();
         let exe = command[0].clone();
 

@@ -25,9 +25,15 @@ if [ ! -f ./config/cman.toml ]; then
 fi
 
 mkdir $CMAN_CONFIG_PATH
-cp ./config/* $CMAN_CONFIG_PATH
+mkdir $CMAN_CONFIG_PATH/bin
+mkdir $CMAN_CONFIG_PATH/tmp
+mkdir $CMAN_CONFIG_PATH/bundle
+mkdir $CMAN_CONFIG_PATH/config
+mkdir $CMAN_CONFIG_PATH/template
+cp ./config/* $CMAN_CONFIG_PATH/config
+cp ./template/* $CMAN_CONFIG_PATH/template
 
 cargo build --release
-install -s ./target/release/cman /usr/local/bin
+cp ./target/release/cman $CMAN_CONFIG_PATH/bin
 
 

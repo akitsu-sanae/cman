@@ -6,7 +6,7 @@ C++ is a build system and package manager for C++.
 
 1. run `cargo build --release`
 2. add your shell config file `export CMAN_CONFIG_PATH="$HOME/.config/cman"`
-3. run 'sudo sh ./setup.sh'
+3. run 'sh ./setup.sh'
 
 
 # How to use

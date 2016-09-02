@@ -19,7 +19,7 @@ pub fn command(_args: Vec<String>) {
     write_makefile::write(config);
     let output = Command::new("make")
         .output()
-        .expect("faild to make");
+        .expect("\u{001B}[31mfaild to make\u{001B}[39m");
 
     println!("stdout\n{}", String::from_utf8_lossy(&output.stdout));
     println!("stderr:\n{}", String::from_utf8_lossy(&output.stderr));

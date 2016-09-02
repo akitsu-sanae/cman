@@ -11,7 +11,7 @@ pub fn command(_: Vec<String>) {
     let output = Command::new("make")
         .arg("clean")
         .output()
-        .expect("faild to clean");
+        .expect("\u{001B}[31mfaild to clean\u{001B}[39m");
 
     println!("{}\u{001B}[39m", if output.status.success() {
         "\u{001B}[32msuccessfully cleaned"
