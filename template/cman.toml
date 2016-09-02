@@ -1,13 +1,13 @@
 
 [package]
-name = "test"
+name = "__PAC_NAME__"
 version = "0.0.1"
-author = ["akitsu-sanae"]
+author = ["__USER_NAME__"]
 
 [path]
-lib_dirs = ["$HOME/local/lib"]
-libs = ["m"]
-includes = ["./include", "$HOME/local/include"]
+lib_dirs = []
+libs = []
+includes = ["./include"]
 source = "./src"
 dest = "./build"
 

@@ -14,7 +14,7 @@ use toml::{Parser, Value};
 
 pub fn read_packages() -> Value {
     let mut input = String::new();
-    let filename = format!("{}/packages.toml", env::var("CMAN_CONFIG_PATH").expect("CMAN_CONFIG_PATH is not set"));
+    let filename = format!("{}/config/packages.toml", env::var("CMAN_CONFIG_PATH").expect("CMAN_CONFIG_PATH is not set"));
 
     File::open(filename).and_then(|mut f| {
         f.read_to_string(&mut input)

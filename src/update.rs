@@ -12,7 +12,7 @@ pub fn command(_: Vec<String>) {
     let cman_config_path = env::var("CMAN_CONFIG_PATH")
         .expect("CMAN_CONFIG_PATH is not set");
 
-    let packages_file = format!("{}/packages.toml", cman_config_path);
+    let packages_file = format!("{}/config/packages.toml", cman_config_path);
 
     let output = Command::new("curl")
         .arg("https://raw.githubusercontent.com/akitsu-sanae/cman/master/config/packages.toml")

@@ -9,16 +9,14 @@
 use std::fs::File;
 use std::io::Write;
 use std::io::Read;
-use std::env;
 use config::Config;
 
 pub fn write(config: Config) {
     let mut makefile = String::new();
 
-    let filename = format!("{}/Makefile.template", env::var("CMAN_CONFIG_PATH").expect("CMAN_CONFIG_PATH is not set"));
-    File::open(filename).and_then(|mut f| {
+    File::open("./Makefile").and_then(|mut f| {
         f.read_to_string(&mut makefile)
-    }).expect("can not open Makefile.template");
+    }).expect("can not open Makefile");
 
 
     File::create("./Makefile").and_then(|mut f| {

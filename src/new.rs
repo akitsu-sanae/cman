@@ -6,39 +6,45 @@
 ============================================================================*/
 
 
-use std::fs;
+use std::fs::File;
+use std::io::Read;
+use std::io::Write;
+use std::process::Command;
+use std::process::exit;
 use std::env;
-use config::Config;
-use error_message::ErrMsg;
-
-fn mkdir(path: &String) {
-    fs::create_dir_all(path.as_str())
-        .expect(format!("can not create directory: {}", path).as_str());
-}
 
 pub fn command(args: Vec<String>) {
-    let em = ErrMsg::new("default cman.toml");
     let ref pack_name = args[1];
+
     let cman_dir = env::var("CMAN_CONFIG_PATH")
         .expect("CMAN_CONFIG_PATH is not set");
 
-    let config = Config::load(format!("{}/cman.toml", cman_dir).as_str())
-        .expect(em.invalid_file().as_str());
+    let output = Command::new("cp")
+        .arg("-r")
+        .arg(format!("{}/template", cman_dir).as_str())
+        .arg(pack_name)
+        .output()
+        .expect("\u{001B}[31mfaild to create cman project...\u{001B}[39m");
 
-    mkdir(pack_name);
-    mkdir(&format!("{}/{}/obj", pack_name, config.path.dest_dir));
-    for inc in config.path.includes {
-        if inc.as_bytes()[0] != '.' as u8 { continue } // maybe, this is not relative path
-        mkdir(&format!("{}/{}", pack_name, inc));
+    if !output.status.success() {
+        println!("stderr:\n{}", String::from_utf8_lossy(&output.stderr));
+        println!("\u{001B}[31mfaild to create cman project...\u{001B}[39m");
+        exit(-1);
     }
 
-    if config.path.src_dir.as_bytes()[0] == '.' as u8 {
-        mkdir(&format!("{}/{}", pack_name, config.path.src_dir));
-    }
+    let mut cman_toml = String::new();
+    File::open(format!("{}/cman.toml", pack_name).as_str()).and_then(|mut f| {
+        f.read_to_string(&mut cman_toml)
+    }).expect("\u{001B}[31mfaild to open cman.toml\u{001B}[39m");
 
-    fs::copy(format!("{}/main.cpp", cman_dir), format!("{}/{}/main.cpp", pack_name, config.path.src_dir))
-        .expect("can not copy main.cpp");
-    fs::copy(format!("{}/cman.toml", cman_dir), format!("{}/cman.toml", pack_name))
-        .expect("can not copy cman.toml");
+    let user_name = env::var("USER")
+        .expect("USER is not set");
+
+    File::create(format!("{}/cman.toml", pack_name).as_str()).and_then(|mut f| {
+        f.write(cman_toml
+                .replace("__PAC_NAME__", pack_name)
+                .replace("__USER_NAME__", user_name.as_str())
+                .as_bytes())
+    }).expect("\u{001B}[31mfaild to create cman.toml\u{001B}[39m");
 }
 

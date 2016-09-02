@@ -1,6 +1,6 @@
 
 date = "2016-09-01"
-install_dir="/usr/local"
+install_dir="__CMAN_CONFIG_PATH__/bundle"
 
 [packages.boost]
 description = "Boost C++ Libraries"
@@ -45,7 +45,7 @@ version = "1.0"
 build_commands = [
     ["git", "clone", "__URL__"],
     ["mv", "./osjul/osjul", "__INSTALL_DIR__/include/"],
-    ["rm", "-rm", "./osjul"]
+    ["rm", "-rf", "./osjul"]
 ]
 
 

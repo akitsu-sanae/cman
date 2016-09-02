@@ -6,17 +6,13 @@
 ============================================================================*/
 
 use std::process::Command;
-use std::path::Path;
 use config::Config;
 use write_makefile;
 
 pub fn command(_: Vec<String>) {
-
-    if !Path::new("./Makefile").exists() {
-        let config = Config::current()
-            .expect("missing ./cman.toml");
-        write_makefile::write(config);
-    }
+    let config = Config::current()
+        .expect("missing ./cman.toml");
+    write_makefile::write(config);
 
     let output = Command::new("make")
         .arg("run")
