@@ -5,6 +5,7 @@
   file LICENSE or copy at http://www.boost.org/LICENSE_1_0.txt)
 ============================================================================*/
 
+use std::process::exit;
 use std::process::Command;
 use error_message::ErrMsg;
 use read_packages::read_packages;
@@ -73,6 +74,10 @@ pub fn command(args: Vec<String>) {
 
         println!("stdout:\n{}", String::from_utf8_lossy(&output.stdout));
         println!("stderr:\n{}", String::from_utf8_lossy(&output.stderr));
+        if !output.status.success() {
+            println!("\u{001B}[31mInstall Failed...\u{001B}[39m");
+            exit(-1);
+        }
     }
 
     println!("\u{001B}[32mSuccessfully Installed [{} ver {}]\u{001B}[39m", name, version);
